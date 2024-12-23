@@ -41,19 +41,33 @@ class PhoneNumber {
   }
 
   bool isValidNumber() {
-    Country country = getCountry(completeNumber);
+    Country? country = getCountryOrNull(completeNumber);
+
+    if (country == null) {
+      return false;
+    }
+
     if (number.length < country.minLength) {
-      throw NumberTooShortException();
+      return false;
     }
 
     if (number.length > country.maxLength) {
-      throw NumberTooLongException();
+      return false;
     }
+
     return true;
   }
 
   String get completeNumber {
     return countryCode + number;
+  }
+
+  static Country? getCountryOrNull(String phoneNumber) {
+    try {
+      return getCountry(phoneNumber);
+    } on Exception {
+      return null;
+    }
   }
 
   static Country getCountry(String phoneNumber) {

@@ -401,6 +401,11 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
         );
       },
       onChanged: (value) async {
+        if (value.startsWith('0')) {
+          widget.controller?.text = value.substring(1);
+          return;
+        }
+
         final phoneNumber = PhoneNumber(
           countryISOCode: _selectedCountry.code,
           countryCode: '+${_selectedCountry.fullCountryCode}',
@@ -472,7 +477,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
                 ],
                 FittedBox(
                   child: Text(
-                    '+${_selectedCountry.dialCode}',
+                    '+${_selectedCountry.dialCode} (0) ',
                     style: widget.dropdownTextStyle,
                   ),
                 ),
